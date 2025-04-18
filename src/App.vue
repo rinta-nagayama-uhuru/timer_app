@@ -4,19 +4,23 @@
       <label for="timeInput">カウントダウン時間(分):</label>
       <input id="timeInput" type="number" v-model="inputMinutes" step="1" min="0"/>
     </div>
-    <div class="timer">{{  formatTime }}</div>
-    <div class="controls">
-      <button @click="setTime" :disabled="timerId !== null">セット</button>
-      <button @click="startTimer" :disabled="timerId !== null || !timeSet">スタート</button>
-      <button @click="stopTimer" :disabled="timerId === null">ストップ</button>
-      <button @click="resetTimer">リセット</button>
-    </div>
+    <div class="timer">{{ formatTime }}</div>
+    <ButtonControl
+    :isSetDisabled="timerId !== null"
+    :isStartDisabled="timerId !== null || !timeSet"
+    :isStopDisabled="timerId === null"
+    @setTime="setTime"
+    @startTimer="startTimer"
+    @stopTimer="stopTimer"
+    @resetTimer="resetTimer"
+    />
   </div>
 </template>
 
 
 <script setup>
   import { ref, computed } from 'vue';
+  import ButtonControl from './components/ButtonControl.vue';
 
   const inputMinutes =  ref(0);
   const time = ref(0);
@@ -39,6 +43,12 @@
     timerId.value = setInterval(() => {
       if (time.value > 0 ){
         time.value -= 1;
+      }
+      if (time.value === 0){
+        setTimeout(() =>{
+          alert("時間になりました!");
+        }, 10)
+        resetTimer();
       }
     }, 1000);
   }
