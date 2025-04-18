@@ -9,6 +9,7 @@
       <button @click="setTime" :disabled="timerId !== null">セット</button>
       <button @click="startTimer" :disabled="timerId !== null || !timeSet">スタート</button>
       <button @click="stopTimer" :disabled="timerId === null">ストップ</button>
+      <button @click="resetTimer">リセット</button>
     </div>
   </div>
 </template>
@@ -21,6 +22,7 @@
   const time = ref(0);
   let timerId = ref(null);
   const timeSet = ref(false);
+  const startingTime = ref(0);
 
   const formatTime = computed(() =>{
     const minutes = Math.floor(time.value / 60);
@@ -44,6 +46,12 @@
   function stopTimer(){
       clearInterval(timerId.value);
       timerId.value = null;
+  }
+
+  function resetTimer(){
+    clearInterval(timerId.value);
+    timerId.value = null;
+    time.value = startingTime.value;
   }
 </script>
 
