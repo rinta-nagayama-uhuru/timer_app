@@ -7,6 +7,7 @@
     <div class="timer">{{  formatTime }}</div>
     <div class="controls">
       <button @click="setTime">セット</button>
+      <button @click="startTimer">スタート</button>
     </div>
   </div>
 </template>
@@ -17,6 +18,7 @@
 
   const inputMinutes =  ref(0);
   const time = ref(0);
+  let timerID = ref(null);
 
   const formatTime = computed(() =>{
     const minutes = Math.floor(time.value / 60);
@@ -26,6 +28,14 @@
 
   function setTime(){
     time.value = inputMinutes.value * 60;
+  }
+
+  function startTimer(){
+    timerID.value = setInterval(() => {
+      if (time.value > 0 ){
+        time.value -= 1;
+      }
+    }, 1000);
   }
 </script>
 
